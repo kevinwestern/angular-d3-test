@@ -1,4 +1,4 @@
-<div simple-chart test="data"></div>
+<div simple-chart data="data"></div>
 
 <div ng-repeat="set in sets">
   <button ng-click="changeTo(set)">Change to set {{$index}}</button>

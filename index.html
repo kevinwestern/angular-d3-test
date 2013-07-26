@@ -30,13 +30,11 @@
 			}]);
 			app.directive('simpleChart', function() {
 				var link = function(scope, el, attrs) {
-					scope.$watch(scope.dataPoints, function() {
-						drawChart();
+					scope.$watch('data', function(data) {
+						drawChart(data);
 					});
 					var chart;
-					var drawChart = function() {
-						var data = scope.dataPoints();
-						var max = d3.max(data);
+					var drawChart = function(data) {
 						if (chart) {
 							chart.remove();
 						}
@@ -53,7 +51,7 @@
 
 				return {
 					scope: {
-						'dataPoints': '&test'
+						'data': '='
 					},
 					link: link
 				}
