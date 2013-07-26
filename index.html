@@ -8,9 +8,7 @@
 		   	padding: 3px;
 		   	margin: 1px;
 		   	color: white;
-		   	float: left;
-		   	width: 10px;
-		   	position: relative;
+		   	height: 20px;
 		 	}
 		</style>
 		<title>Dashboard</title>
@@ -24,32 +22,38 @@
 		<script>
 			var app = angular.module('dashboard', []);
 			app.controller('IndexCtrl', ['$scope', function($scope) {
-				$scope.data = [1,2,3,4,2,3,2.5,6,5.5,3.3,3.145,3.7,9];
+				$scope.sets = [[10, 12, 14], [11, 9, 7], [3, 5, 11]];
+				$scope.data = $scope.sets[0];
+				$scope.changeTo = function(set) {
+					$scope.data = set;
+				};
 			}]);
 			app.directive('simpleChart', function() {
 				var link = function(scope, el, attrs) {
-					var data = scope.dataPoints;
-					var max;
-					data.forEach(function(d){
-						if (!max) {
-							max = d;
-						}
-						max = Math.max(max, d);
+					scope.$watch(scope.dataPoints, function() {
+						drawChart();
 					});
-					d3.select(el[0]).
-						append('div').
-						attr('class', 'chart').
-						selectAll('div').
-						data(data).
-						enter().
-						append('div').
-						style('height', function(d) { return d * 20 + 'px';}).
-						style('top', function(d) { return (max * 20 - d * 20) + 'px'; });
+					var chart;
+					var drawChart = function() {
+						var data = scope.dataPoints();
+						var max = d3.max(data);
+						if (chart) {
+							chart.remove();
+						}
+						chart = d3.select(el[0]).
+							append('div').
+							attr('class', 'chart').
+							selectAll('div').
+							data(data).
+							enter().
+							append('div').
+							style('width', function(d) { return d * 20 + 'px';});
+					};
 				};
 
 				return {
 					scope: {
-						'dataPoints': '=test'
+						'dataPoints': '&test'
 					},
 					link: link
 				}
