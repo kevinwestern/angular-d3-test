@@ -21,41 +21,6 @@
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script>
 			var app = angular.module('dashboard', []);
-			app.controller('IndexCtrl', ['$scope', function($scope) {
-				$scope.sets = [[10, 12, 14], [11, 9, 7], [3, 5, 11]];
-				$scope.data = $scope.sets[0];
-				$scope.changeTo = function(set) {
-					$scope.data = set;
-				};
-			}]);
-			app.directive('simpleChart', function() {
-				var link = function(scope, el, attrs) {
-					scope.$watch('data', function(data) {
-						drawChart(data);
-					});
-					var chart;
-					var drawChart = function(data) {
-						if (chart) {
-							chart.remove();
-						}
-						chart = d3.select(el[0]).
-							append('div').
-							attr('class', 'chart').
-							selectAll('div').
-							data(data).
-							enter().
-							append('div').
-							style('width', function(d) { return d * 20 + 'px';});
-					};
-				};
-
-				return {
-					scope: {
-						'data': '='
-					},
-					link: link
-				}
-			})
 			app.config(['$locationProvider', function($locationProvider) {
 				$locationProvider.html5Mode(true);
 			}]).config(['$routeProvider', function($routeProvider) {
@@ -65,7 +30,9 @@
 				}).otherwise({
 					redirectTo: '/'
 				});
-			}]);
+			}]);			
 		</script>
+		<script src="./indexctrl.js"></script>
+		<script src="./simplechartdirective.js"></script>
 	</body>
 </html>
