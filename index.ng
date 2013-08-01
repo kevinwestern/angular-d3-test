@@ -1,5 +1,11 @@
-<div simple-chart data="data"></div>
+<!--<div simple-chart data="data"></div>-->
 
-<div ng-repeat="set in sets">
+<!--<div ng-repeat="set in sets">
   <button ng-click="changeTo(set)">Change to set {{$index}}</button>
+</div>-->
+
+
+<div ng-controller="foodctrl">
+  <col-chart domain="time" range="nutrients" selection="zoomTo(day)"></col-chart>
+  <button ng-repeat="p in periods" ng-click="setPeriod(p)">{{p}}</button>
 </div>
